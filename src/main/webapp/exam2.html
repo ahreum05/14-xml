@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="css/reset.css">
+<link rel="stylesheet" type="text/css" href="css/common.css">
+<script type="text/javascript" src="js/jquery-3.7.1.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$("#mybtn").click(function(){
+			 $.ajax({
+		     	url : "ajax/xml/xml2.xml",
+		        type : "get",
+		        dateTpye : "xml",
+		        timeout : 30000,
+		        cache : false,
+		        success : function(xml){
+		        	$(xml).find("subject").each(function() {
+		        		var title = $(this).find("title").text();
+		                var time = $(this).find("time").text();
+		                var teacher = $(this).find("teacher").text();
+		                // 추출 데이터를 출력하기 위해 태그 생성
+		                var div = $("<div>");
+		                var p1 = $("<p>").html(title);
+		                var p2 = $("<p>").html(time);
+		                var p3 = $("<p>").html(teacher);
+		             	// 태그 결합 
+		                div.append(p1).append(p2).append(p3);
+		             	// #result 태그에 추가
+		                $("#result").append(div);
+		                $("#result").append("<hr>")
+		        	});
+
+		        	
+		        /*  var subject = $(xml).find("subject");
+					for(var i=0; i < subject.length; i++) {
+						var title = subject[i].querySelector("title").innerHTML;
+			            var time = subject[i].querySelector("time").innerHTML;
+			            var teacher = subject[i].querySelector("teacher").innerHTML;
+			            $("#result").append(title + "<br>" + time + "<br>" + teacher);
+			            $("#result").append("<hr>");
+					}
+				*/	
+		        },
+		        error : function(xhr,textStatus,errorThrown){
+		            $("#result").html("[Error] " +xhr.status);
+		        }
+			});
+		});
+	});
+</script>
+</head>
+<body>
+	<h1 class="title">$.ajax() 함수를 사용한 XML 데이터 읽기</h1>
+	<div class="exec">
+		<input type="button" value="xml 데이터 가져오기" id="mybtn">
+	</div>
+	
+	<div class="console" id="result"></div>
+</body>
+</html>
